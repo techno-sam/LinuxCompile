@@ -346,17 +346,17 @@ NEXT=2.1
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	begin_stage openexr openexr*.tar.gz
 
-	if ! ./bootstrap ; then
-		echo " !!! openexr bootstrap failed"
+	mkdir -p build
+	cd build || { echo "Failed to create build directory"; exit 1; }
+
+	if ! cmake .. -DCMAKE_INSTALL_PREFIX="$TARGET" \
+			-DBUILD_SHARED_LIBS=OFF \
+			-DCMAKE_SYSTEM_NAME="$CHOST" ; then
+		echo " !!! OpenEXR CMake configuration failed"
 		exit 1
 	fi
-	if ! ./configure --enable-static --disable-shared $CONFIGOPTS --prefix=$TARGET --with-ilmbase-prefix=$TARGET ; then
-		echo " !!! openexr configuration failed"
-		exit 1
-	fi
+
 	sleep $PAUSE
-	echo "Patching openexr file due to missing std::numeric_limits import..."
-	sed -i '38i #include <limits>' ./IlmImf/ImfTiledMisc.cpp
 	if make $MAKEOPTS && make install ; then
 		echo " * openexr compiled and installed successfully"
 	else
@@ -370,10 +370,7 @@ fi
 # STAGE 2.1 -- OpenImageIO
 NEXT=2.2
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
-	begin_stage openimageio oiio*.tar.gz
-
-	echo " * Patching OpenImageIO"
-	cp -vf $DIST/oiio-2.2.13.1-compiler.cmake src/cmake/compiler.cmake
+	begin_stage openimageio OpenImageIO*.tar.gz
 
 	if CMAKE_BUILD_PARALLEL_LEVEL=$CORE_COUNT CMAKE_PREFIX_PATH=$TARGET make $MAKEOPTS BOOST_HOME=$TARGET ILMBASE_HOME=$TARGET \
 		VERBOSE=1 USE_FFMPEG=0 EMBEDPLUGINS=1 \
@@ -388,10 +385,10 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	fi
 	echo " * Installing openimageio library and headers"
 	sleep $PAUSE
-	if cp -vr dist/linux*/* $TARGET && cd $TARGET/lib && \
+	if cp -vr dist/* $TARGET && cd $TARGET/lib && \
 			mv -v libOpenImageIO.a libOpenImageIOBase.a && \
-			ar -rcT libOpenImageIO.a libOpenImageIOBase.a libpng.a libjpeg.a libtiff.a libHalf.a \
-			libIex.a libIexMath.a libIlmImf.a libIlmThread.a libImath.a libz.a libbz2.a liblzma.a \
+			ar -rcT libOpenImageIO.a libOpenImageIOBase.a libpng.a libjpeg.a libtiff.a \
+			libIex-3_2.a libIlmThread-3_2.a libImath-3_1.a libz.a libbz2.a liblzma.a \
 			libfreetype.a ; then
         echo " * openimageio installed successfully"
     else
