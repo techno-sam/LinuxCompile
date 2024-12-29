@@ -51,8 +51,8 @@ if [[ ! ${8} ]] ; then
 	echo "	Stage 1.6 - openexr"
 	echo "	Stage 2.1 - openimageio"
 	echo "	Stage 3   - Qt"
-	echo "	Stage 4.1 - Embree"
-	echo "	Stage 4.2 - Oidn"
+	echo "	Stage 4.1 - Oidn"
+	echo "	Stage 4.2 - Embree"
 	echo "	Stage 4.3 - C-blosc"
 	echo "	Stage 4.4 - TBB"
 	echo "	Stage 4.5 - NVRTC"
@@ -427,26 +427,8 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
     complete_stage $NEXT
 fi
 
-# STAGE 4.1 -- Embree
+# STAGE 4.1 -- Oidn
 NEXT=4.2
-if [[ $STAGE && $STAGE < $NEXT ]] ; then
-	begin_stage Embree embree-*.tar.gz
-
-	cp -v ${DIST}/embree-install.sh .
-
-    sleep 1
-    if ./embree-install.sh $TARGET ; then
-        echo " * Embree library and headers installed successfully"
-    else
-        echo " !!! Embree library and headers installation failed"
-        exit 1
-    fi
-
-	complete_stage $NEXT
-fi
-
-# STAGE 4.2 -- Oidn
-NEXT=4.3
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	begin_stage Oidn oidn-*.tar.gz
 
@@ -457,6 +439,24 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
         echo " * Oidn library and headers installed successfully"
     else
         echo " !!! Oidn library and headers installation failed"
+        exit 1
+    fi
+
+	complete_stage $NEXT
+fi
+
+# STAGE 4.2 -- Embree
+NEXT=4.3
+if [[ $STAGE && $STAGE < $NEXT ]] ; then
+	begin_stage Embree embree-*.tar.gz
+
+	cp -v ${DIST}/embree-install.sh .
+
+    sleep 1
+    if ./embree-install.sh $TARGET ; then
+        echo " * Embree library and headers installed successfully"
+    else
+        echo " !!! Embree library and headers installation failed"
         exit 1
     fi
 
