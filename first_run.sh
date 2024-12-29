@@ -3,7 +3,7 @@
 # Install dependencies that are not handled by LinuxCompileDeps
 echo " * Installing deps"
 sudo apt update
-sudo apt install -y libtool-bin cmake flex bison libgtk-3-dev libgl1-mesa-dev python3.11-venv git patchelf
+sudo apt install -y libtool-bin cmake flex bison libgtk-3-dev libgl1-mesa-dev python3.11-dev python3.11-venv git patchelf
 
 # Set up Python venv
 echo " * Setting up venv"
