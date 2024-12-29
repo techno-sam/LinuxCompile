@@ -249,6 +249,11 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 		# Fix boost python lib names
 		mv -f $TARGET/lib/libboost_python*.a $TARGET/lib/libboost_python.a
 		mv -f $TARGET/lib/libboost_numpy*.a $TARGET/lib/libboost_numpy.a
+		pushd $(pwd)
+		cd $TARGET/lib
+		ln -s libboost_python.a libboost_python311.a
+		ln -s libboost_numpy.a libboost_numpy311.a
+		popd
 		echo " * Boost compiled and installed successfully"
 	else
 		echo " !!! Boost compilation failed"
@@ -534,7 +539,8 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	fi
 	sleep $PAUSE
 	echo " * Compiling $LUXCORE_TARGET"
-	if cmake --build . -- $MAKEOPTS ; then
+#	if cmake --build . -- $MAKEOPTS ; then
+	if cmake --build . ; then
             echo " * $LUXCORE_TARGET compiled successfully"
 	else
             echo " !!! $LUXCORE_TARGET compilation failed"

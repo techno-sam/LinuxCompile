@@ -14,7 +14,7 @@ cp -r /usr/include/python3.11/* .venv/include/python3.11/
 
 # Download LuxCore sources
 echo " * Downloading LuxCore sources"
-git clone https://github.com/LuxCoreRender/LuxCore.git
+git clone https://github.com/techno-sam/LuxCore.git --branch for_blender4.1_linux
 
 # Start build script, pass the path to the LuxCore sources as first argument
 # This will take a very long time on the first run because it needs to compile all dependencies

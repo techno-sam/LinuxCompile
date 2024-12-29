@@ -13,3 +13,8 @@ cp -av lib/lib* $LIBRARY_INSTALL_DIR
 rm $LIBRARY_INSTALL_DIR/libtbb.so
 rm $LIBRARY_INSTALL_DIR/libtbb.so.12
 cp $LIBRARY_INSTALL_DIR/libtbb.so.12.1 $LIBRARY_INSTALL_DIR/libtbb.so.12
+
+pushd $(pwd)
+cd $LIBRARY_INSTALL_DIR
+ln -s libOpenImageDenoise.so libOpenImageDenoise.so.0
+popd
