@@ -10,6 +10,7 @@ echo " * Setting up venv"
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip3.11 install numpy==1.24.3
+cp -r /usr/include/python3.11/* .venv/include/python3.11/
 
 # Download LuxCore sources
 echo " * Downloading LuxCore sources"
