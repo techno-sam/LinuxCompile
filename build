@@ -346,24 +346,6 @@ NEXT=2.1
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	begin_stage openexr openexr*.tar.gz
 
-	cd IlmBase
-	if ! ./bootstrap ; then
-		echo " !!! ilmbase bootstrap failed"
-		exit 1
-	fi
-	if ! ./configure --enable-static --disable-shared $CONFIGOPTS --prefix=$TARGET ; then
-		echo " !!! ilmbase configuration failed"
-		exit 1
-	fi
-	sleep $PAUSE
-	if make $MAKEOPTS && make install ; then
-		echo " * ilmbase compiled and installed successfully"
-	else
-		echo " !!! ilmbase compilation failed"
-		exit 1
-	fi
-
-	cd ../OpenEXR
 	if ! ./bootstrap ; then
 		echo " !!! openexr bootstrap failed"
 		exit 1
