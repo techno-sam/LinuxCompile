@@ -111,6 +111,9 @@ export TMPDIR="$WORK"
 export PYTHON_CMD="python3.11"
 #export PYTHON_CMD="python3"
 
+# enter venv
+source .venv/bin/activate
+
 unset CC CXX
 if [[ -e "${ROOT}"/use_clang ]] ; then
 	echo " * Using Clang compiler"
