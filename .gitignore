@@ -4,3 +4,4 @@ distfiles/*.tgz
 distfiles/*.xz
 distfiles/*.bz2
 target-64-sse2/
+.venv
