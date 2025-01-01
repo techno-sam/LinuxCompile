@@ -10,9 +10,10 @@ cp -av include/OpenImageDenoise $INCLUDE_INSTALL_DIR
 
 cp -av lib/lib* $LIBRARY_INSTALL_DIR
 
-rm $LIBRARY_INSTALL_DIR/libtbb.so
-rm $LIBRARY_INSTALL_DIR/libtbb.so.12
-cp $LIBRARY_INSTALL_DIR/libtbb.so.12.9 $LIBRARY_INSTALL_DIR/libtbb.so.12
+rm -v $LIBRARY_INSTALL_DIR/libtbb.so
+rm -v $LIBRARY_INSTALL_DIR/libtbb.so.2
+rm -v $LIBRARY_INSTALL_DIR/libtbb.so.12
+cp -v $LIBRARY_INSTALL_DIR/libtbb.so.12.11 $LIBRARY_INSTALL_DIR/libtbb.so.12
 
 pushd $(pwd)
 cd $LIBRARY_INSTALL_DIR

@@ -20,7 +20,7 @@ function begin_stage() {
 		unzip -d $WORK ${DIST}/$distfile_mask
 	fi
 
-	cd $WORK/`echo $distfile_mask | sed 's/\*.*//'`*
+	cd $WORK/`echo $distfile_mask | sed 's/\*.*//'`* || cd $WORK
 	echo " * Compiling ${stage_name}"
 	sleep $PAUSE
 }
@@ -51,10 +51,10 @@ if [[ ! ${8} ]] ; then
 	echo "	Stage 1.6 - openexr"
 	echo "	Stage 2.1 - openimageio"
 	echo "	Stage 3   - Qt"
-	echo "	Stage 4.1 - Oidn"
-	echo "	Stage 4.2 - Embree"
-	echo "	Stage 4.3 - C-blosc"
-	echo "	Stage 4.4 - TBB"
+	echo "	Stage 4.1 - TBB"
+	echo "	Stage 4.2 - Oidn"
+	echo "	Stage 4.3 - Embree"
+	echo "	Stage 4.4 - C-blosc"
 	echo "	Stage 4.5 - NVRTC"
 	echo "	Stage 5   - luxcore"
 	echo "	Stage 6   - luxmark (optional)"
@@ -427,8 +427,26 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
     complete_stage $NEXT
 fi
 
-# STAGE 4.1 -- Oidn
+# STAGE 4.1 -- TBB
 NEXT=4.2
+if [[ $STAGE && $STAGE < $NEXT ]] ; then
+	begin_stage TBB tbb*_lin.tgz
+
+	cp -v ${DIST}/tbb-install.sh .
+
+    sleep 1
+    if ./tbb-install.sh $TARGET ; then
+        echo " * TBB library and headers installed successfully"
+    else
+        echo " !!! TBB library and headers installation failed"
+        exit 1
+    fi
+
+	complete_stage $NEXT
+fi
+
+# STAGE 4.2 -- Oidn
+NEXT=4.3
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	begin_stage Oidn oidn-*.tar.gz
 
@@ -445,8 +463,8 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	complete_stage $NEXT
 fi
 
-# STAGE 4.2 -- Embree
-NEXT=4.3
+# STAGE 4.3 -- Embree
+NEXT=4.4
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	begin_stage Embree embree-*.tar.gz
 
@@ -463,8 +481,8 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	complete_stage $NEXT
 fi
 
-# STAGE 4.3 -- C-blosc
-NEXT=4.4
+# STAGE 4.4 -- C-blosc
+NEXT=4.5
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	begin_stage C-blosc c-blosc-*.tgz
 
@@ -475,24 +493,6 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
         echo " * C-blosc library and headers installed successfully"
     else
         echo " !!! C-blosc library and headers installation failed"
-        exit 1
-    fi
-
-	complete_stage $NEXT
-fi
-
-# STAGE 4.4 -- TBB
-NEXT=4.5
-if [[ $STAGE && $STAGE < $NEXT ]] ; then
-	begin_stage TBB tbb*_lin.tgz
-
-	cp -v ${DIST}/tbb-install.sh .
-
-    sleep 1
-    if ./tbb-install.sh $TARGET ; then
-        echo " * TBB library and headers installed successfully"
-    else
-        echo " !!! TBB library and headers installation failed"
         exit 1
     fi
 
@@ -540,7 +540,7 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	sleep $PAUSE
 	echo " * Compiling $LUXCORE_TARGET"
 #	if cmake --build . -- $MAKEOPTS ; then
-	if cmake --build . ; then
+	if cmake --build . --verbose ; then
             echo " * $LUXCORE_TARGET compiled successfully"
 	else
             echo " !!! $LUXCORE_TARGET compilation failed"
