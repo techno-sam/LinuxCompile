@@ -8,4 +8,4 @@ mkdir -p $LIBRARY_INSTALL_DIR
 
 cp -vr include/serial include/tbb $INCLUDE_INSTALL_DIR
 
-cp -vr ../tbb2019_20191006oss/lib/intel64/gcc4.8/lib* $LIBRARY_INSTALL_DIR
+cp -vr ../tbb/lib/intel64/gcc4.8/lib* $LIBRARY_INSTALL_DIR

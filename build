@@ -430,7 +430,7 @@ fi
 # STAGE 4.1 -- TBB
 NEXT=4.2
 if [[ $STAGE && $STAGE < $NEXT ]] ; then
-	begin_stage TBB tbb*_lin.tgz
+	begin_stage TBB tbb*-lin.tgz
 
 	cp -v ${DIST}/tbb-install.sh .
 
