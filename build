@@ -540,6 +540,7 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	sleep $PAUSE
 	echo " * Compiling $LUXCORE_TARGET"
 #	if cmake --build . -- $MAKEOPTS ; then
+#	if cmake --build . -- -j 6 ; then
 	if cmake --build . --verbose ; then
             echo " * $LUXCORE_TARGET compiled successfully"
 	else
