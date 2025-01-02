@@ -369,6 +369,15 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 		exit 1
 	fi
 
+	sleep $PAUSE
+	cd $TARGET/lib
+	ln -s libOpenEXR-3*.a libOpenEXR.a
+	ln -s libOpenEXRCore-3*.a libOpenEXRCore.a
+	ln -s libOpenEXRUtil-3*.a libOpenEXRUtil.a
+	ln -s libIex-3*.a libIex.a
+	ln -s libImath-3*.a libImath.a
+	ln -s libIlmThread-3*.a libIlmThread.a
+
 	complete_stage $NEXT
 fi
 
@@ -380,7 +389,7 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	if CMAKE_BUILD_PARALLEL_LEVEL=$CORE_COUNT CMAKE_PREFIX_PATH=$TARGET make $MAKEOPTS BOOST_HOME=$TARGET ILMBASE_HOME=$TARGET \
 		VERBOSE=1 USE_FFMPEG=0 EMBEDPLUGINS=1 \
 		USE_OPENGL=0 USE_QT=0 USE_GIF=0 USE_OPENJPEG=0 USE_OPENSSL=0 \
-		USE_FIELD3D=0 USE_OCIO=0 USE_OPENCV=0 USE_PYTHON=0 \
+		USE_FIELD3D=0 USE_OCIO=0 USE_OpenColorIO=0 USE_OPENCV=0 USE_PYTHON=0 \
 		BUILD_SHARED_LIBS=0 LINKSTATIC=1 OIIO_BUILD_TOOLS=0 OIIO_BUILD_TESTS=0 \
 		STOP_ON_WARNING=0 ; then
 		echo " * openimageio compiled successfully"
@@ -393,7 +402,7 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	if cp -vr dist/* $TARGET && cd $TARGET/lib && \
 			mv -v libOpenImageIO.a libOpenImageIOBase.a && \
 			ar -rcT libOpenImageIO.a libOpenImageIOBase.a libpng.a libjpeg.a libtiff.a \
-			libIex-3_2.a libIlmThread-3_2.a libImath-3_1.a libz.a libbz2.a liblzma.a \
+			libIex.a libIlmThread.a libImath.a libz.a libbz2.a liblzma.a \
 			libfreetype.a ; then
         echo " * openimageio installed successfully"
     else
@@ -533,6 +542,7 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 			-D EMBREE_SEARCH_PATH:PATH="$TARGET" \
 			-D OIDN_SEARCH_PATH:PATH="$TARGET" \
 			-D TBB_SEARCH_PATH:PATH="$TARGET" \
+			-D OPENEXR_SEARCH_PATH:PATH="$TARGET" \
 			-D BOOST_SEARCH_PATH:PATH="$TARGET" . ; then
 		echo " !!! $LUXCORE_TARGET configuration failed"
 		exit 1
