@@ -402,7 +402,8 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	if cp -vr dist/* $TARGET && cd $TARGET/lib && \
 			mv -v libOpenImageIO.a libOpenImageIOBase.a && \
 			ar -rcT libOpenImageIO.a libOpenImageIOBase.a libpng.a libjpeg.a libtiff.a \
-			libIex.a libIlmThread.a libImath.a libz.a libbz2.a liblzma.a \
+			libIex.a libOpenEXR.a libOpenEXRCore.a libOpenEXRUtil.a libIlmThread.a \
+			libImath.a libz.a libbz2.a liblzma.a \
 			libfreetype.a ; then
         echo " * openimageio installed successfully"
     else
@@ -549,9 +550,9 @@ if [[ $STAGE && $STAGE < $NEXT ]] ; then
 	fi
 	sleep $PAUSE
 	echo " * Compiling $LUXCORE_TARGET"
-#	if cmake --build . -- $MAKEOPTS ; then
+	if cmake --build . -- $MAKEOPTS ; then
 #	if cmake --build . -- -j 6 ; then
-	if cmake --build . --verbose ; then
+#	if cmake --build . --verbose ; then
             echo " * $LUXCORE_TARGET compiled successfully"
 	else
             echo " !!! $LUXCORE_TARGET compilation failed"
